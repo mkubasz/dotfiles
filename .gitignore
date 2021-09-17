@@ -27,7 +27,7 @@
 !.config/tmux/tmux.conf
 
 !.config/nvim/
-.config/nvim/**
+.config/nvim/*
+!.config/nvim/lua/
 !.config/nvim/init.lua
 
-!.config/nvim/lua/**
