@@ -15,8 +15,6 @@ require('feline').setup {
 vim.opt.termguicolors = true
 require('bufferline').setup {}
 
-require('true-zen').setup()
-
 require('neoscroll').setup()
 
 require('gitsigns').setup {
@@ -41,7 +39,7 @@ require('nvim-autopairs').setup()
 require('mkdnflow').setup({})
 
 require('nvim-treesitter.configs').setup {
-    indent = {
+  indent = {
     enable = true
   },
   refactor = {
@@ -50,6 +48,11 @@ require('nvim-treesitter.configs').setup {
   highlight = {
     enable = true,
     use_language = true,
+  },
+  context_commentstring = {
+    enable = true,
+    -- This plugin provided an autocommand option
+    enable_autocmd = true,
   }
 }
 
@@ -62,4 +65,9 @@ parser_configs.http = {
   },
 }
 
+vim.cmd('set shell=/bin/bash')
+
 require('telescope').load_extension('fzf')
+
+require('commented').setup()
+require('focus').setup()

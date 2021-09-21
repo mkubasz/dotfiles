@@ -28,16 +28,24 @@ require('packer').startup(function(use)
     'akinsho/bufferline.nvim', 
     requires = 'kyazdani42/nvim-web-devicons'
   }
+  
+  use {
+    'kyazdani42/nvim-tree.lua',
+    requires = 'kyazdani42/nvim-web-devicons'
+  }
+
+  use 'winston0410/commented.nvim'
+
   use {
     'rcarriga/vim-ultest', 
     requires = {'vim-test/vim-test'}, 
     run = ':UpdateRemotePlugins'
   }
+
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'
   }
-
   -- BEGIN Git
   use {
     "TimUntersberger/neogit",
@@ -69,7 +77,6 @@ require('packer').startup(function(use)
   }
   use 'lukas-reineke/indent-blankline.nvim'
   use 'windwp/nvim-autopairs'
-
   -- BEGIN Completion --
   use 'nvim-lua/completion-nvim'
   use 'neovim/nvim-lspconfig'
@@ -82,10 +89,11 @@ require('packer').startup(function(use)
     'ms-jpq/coq.artifacts', 
     branch= 'artifacts'
   }
+  use 'glepnir/lspsaga.nvim'
   -- END  --
+  use 'simrat39/rust-tools.nvim'
 
   use 'karb94/neoscroll.nvim'
-  use 'Pocco81/TrueZen.nvim'
 
   -- BEGIN Markdown --
   use {
@@ -118,4 +126,31 @@ require('packer').startup(function(use)
   }
   use 'mfussenegger/nvim-dap'
 
+  use 'ggandor/lightspeed.nvim'
+
+  use 'beauwilliams/focus.nvim' 
+  use { 
+    "nvim-neorg/neorg",
+    config = function()
+        require('neorg').setup {
+            load = {
+                ["core.defaults"] = {}, -- Load all the default modules
+                ["core.norg.concealer"] = {}, -- Allows for use of icons
+                ["core.norg.dirman"] = { -- Manage your directories with Neorg
+                    config = {
+                        workspaces = {
+                            my_workspace = "~/.neorg"
+                        }
+                    }
+                }
+            },
+        }
+    end,
+    requires = "nvim-lua/plenary.nvim"
+  }
+  use 'CRAG666/code_runner.nvim'
+  use {
+    'michaelb/sniprun',
+    run = 'bash install.sh'
+  }
 end)
