@@ -55,9 +55,15 @@ fish_add_path $HOME/.cargo/bin
 fish_add_path $HOME/.local/bin
 # fnm
 fish_add_path $HOME/.fnm
-
+fish_add_path $HOME/go/bin
 fnm env | source
 
 set -U fish_user_paths ~/.npmbin/bin $fish_user_paths
 # starship
 starship init fish | source
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+eval /home/tumnus/anaconda3/bin/conda "shell.fish" "hook" $argv | source
+# <<< conda initialize <<<
+
