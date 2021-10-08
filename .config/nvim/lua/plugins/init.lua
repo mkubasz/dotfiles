@@ -157,13 +157,11 @@ require('packer').startup(function(use)
       require('trouble').setup {}
     end
   }
+  use 'sbdchd/neoformat'
   use 'jose-elias-alvarez/null-ls.nvim'
   use 'jose-elias-alvarez/nvim-lsp-ts-utils'
-  use {
-    'mhartington/formatter.nvim',
-    opt = true,
-  }
   use 'winston0410/commented.nvim'
+  use 'p00f/nvim-ts-rainbow'
   ----------
   -- END  --
   ----------

@@ -95,7 +95,6 @@ local on_attach_ts = function(client, bufnr)
     client.config.flags.allow_incremental_sync = true
   end
   client.resolved_capabilities.document_formatting = false
-  --set_lsp_config(client)
 end
 
 require'lspinstall'.setup()
@@ -158,7 +157,6 @@ lsp.efm.setup(coq.lsp_ensure_capabilities({
   on_attach = function(client)
     client.resolved_capabilities.document_formatting = true
     client.resolved_capabilities.goto_definition = false
-    --set_lsp_config(client)
   end,
   root_dir = function()
     if not eslint_config_exists() then
