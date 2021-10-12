@@ -243,4 +243,5 @@ require('packer').startup(function(use)
   use 'ggandor/lightspeed.nvim'
 
   use 'takac/vim-hardtime'
+  use 'akinsho/toggleterm.nvim'
 end)

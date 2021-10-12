@@ -58,3 +58,6 @@ map('n', '<leader>da', ':lua require"debugHelper".attach()<CR>', {silent = true,
 map('n', '<leader>dA', ':lua require"debugHelper".attachToRemote()<CR>', {silent = true, noremap = true})
 map('n', '<leader>di', ':lua require"dap.ui.widgets".hover()<CR>', {silent = true, noremap = true})
 map('n', '<leader>d?', ':lua local widgets=require"dap.ui.widgets";widgets.centered_float(widgets.scopes)<CR>', {silent = true, noremap = true})
+
+map('n', '<c-t>', '<cmd>exe v:count1 . "ToggleTerm"<CR>', {silent = true, noremap = true})
+map('i', '<c-t>', '<esc><cmd>exe v:count1 . "ToggleTerm"<CR>', {silent = true})
