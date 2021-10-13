@@ -61,3 +61,7 @@ map('n', '<leader>d?', ':lua local widgets=require"dap.ui.widgets";widgets.cente
 
 map('n', '<c-t>', '<cmd>exe v:count1 . "ToggleTerm"<CR>', {silent = true, noremap = true})
 map('i', '<c-t>', '<esc><cmd>exe v:count1 . "ToggleTerm"<CR>', {silent = true})
+
+
+map('n', '[b', '<cmd>:BufferLineCycleNext<CR>', {silent = true, noremap = true})
+map('n', 'b]', '<cmd>:BufferLineCyclePrev<CR>', {silent = true, noremap = true})

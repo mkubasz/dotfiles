@@ -81,6 +81,8 @@ require('packer').startup(function(use)
       require('todo-comments').setup {}
     end
   }
+  
+  use 'RRethy/vim-illuminate'
 
   use 'nvim-lua/popup.nvim'
 
@@ -233,7 +235,13 @@ require('packer').startup(function(use)
     end,
     requires = 'nvim-lua/plenary.nvim'
   }
-
+  use {
+      'ThePrimeagen/refactoring.nvim',
+      requires = {
+          {'nvim-lua/plenary.nvim'},
+          {'nvim-treesitter/nvim-treesitter'}
+      }
+  }
   use {
     'ahmedkhalf/project.nvim',
     config = function()
@@ -244,4 +252,6 @@ require('packer').startup(function(use)
 
   use 'takac/vim-hardtime'
   use 'akinsho/toggleterm.nvim'
+
+  use 'chentau/marks.nvim'
 end)

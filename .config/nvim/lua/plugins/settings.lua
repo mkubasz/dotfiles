@@ -51,8 +51,6 @@ require('nvim-treesitter.configs').setup {
     enable = true,
     extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
     max_file_lines = nil, -- Do not enable for files with more than n lines, int
-    -- colors = {}, -- table of hex strings
-    -- termcolors = {} -- table of colour name strings
   }
 }
 
@@ -121,8 +119,6 @@ require'diffview'.setup {
   },
   key_bindings = {
     disable_defaults = false,                   -- Disable the default key bindings
-    -- The `view` bindings are active in the diff buffers, only when the current
-    -- tabpage is a Diffview.
     view = {
       ["<tab>"]      = cb("select_next_entry"),  -- Open the diff for the next file
       ["<s-tab>"]    = cb("select_prev_entry"),  -- Open the diff for the previous file
@@ -183,6 +179,9 @@ require'diffview'.setup {
   },
 }
 
+local refactor = require("refactoring")
+refactor.setup()
+
 
 require("toggleterm").setup{
   shell = 'fish',
@@ -201,3 +200,14 @@ function _G.set_terminal_keymaps()
 end
 
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+require'marks'.setup {
+  default_mappings = true, -- whether to map keybinds or not. default true
+  builtin_marks = { ".", "<", ">", "^" }, -- which builtin marks to show. default {}
+  cyclic = true, -- whether movements cycle back to the beginning/end of buffer. default true
+  force_write_shada = false, -- whether the shada file is updated after modifying uppercase marks. default false
+  bookmark_0 = { -- marks.nvim allows you to configure up to 10 bookmark groups, each with its own sign/virttext
+    sign = "⚑",
+    virt_text = "hello world"
+  },
+  mappings = {}
+}
