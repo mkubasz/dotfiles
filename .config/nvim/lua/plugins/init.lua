@@ -45,7 +45,8 @@ require('packer').startup(function(use)
     run = ':TSUpdate'
   }
   use 'nvim-treesitter/nvim-treesitter-textobjects'
-
+ use 'nvim-treesitter/nvim-treesitter-refactor'
+ use 'romgrk/nvim-treesitter-context'
   use 'lukas-reineke/indent-blankline.nvim'
 
   use 'windwp/nvim-autopairs'
@@ -82,8 +83,6 @@ require('packer').startup(function(use)
     end
   }
   
-  use 'RRethy/vim-illuminate'
-
   use 'nvim-lua/popup.nvim'
 
   use 'nvim-telescope/telescope.nvim'
@@ -109,6 +108,10 @@ require('packer').startup(function(use)
   use { 
     'ms-jpq/coq.artifacts', 
     branch= 'artifacts'
+  }
+  use 'ms-jpq/coq.thirdparty'
+  use {
+    'ray-x/lsp_signature.nvim',
   }
   use {
     'ray-x/navigator.lua', 
@@ -164,6 +167,8 @@ require('packer').startup(function(use)
   use 'jose-elias-alvarez/nvim-lsp-ts-utils'
   use 'winston0410/commented.nvim'
   use 'p00f/nvim-ts-rainbow'
+  use 'onsails/lspkind-nvim'
+  use 'stevearc/aerial.nvim'
   ----------
   -- END  --
   ----------
@@ -250,8 +255,7 @@ require('packer').startup(function(use)
   }
   use 'ggandor/lightspeed.nvim'
 
-  use 'takac/vim-hardtime'
   use 'akinsho/toggleterm.nvim'
-
+  use 'yamatsum/nvim-cursorline'
   use 'chentau/marks.nvim'
 end)

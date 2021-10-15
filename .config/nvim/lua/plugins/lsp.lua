@@ -4,12 +4,45 @@ vim.g.coq_settings = {
     tabnine = {
       enabled = true,
     }
+  },
+  display = { 
+    icons = {
+      mappings = {
+        Text = "",
+        Method = "",
+        Function = "",
+        Constructor = "",
+        Field = "ﰠ",
+        Variable = "",
+        Class = "ﴯ",
+        Interface = "",
+        Module = "",
+        Property = "ﰠ",
+        Unit = "塞",
+        Value = "",
+        Enum = "",
+        Keyword = "",
+        Snippet = "",
+        Color = "",
+        File = "",
+        Reference = "",
+        Folder = "",
+        EnumMember = "",
+        Constant = "",
+        Struct = "פּ",
+        Event = "",
+        Operator = "",
+        TypeParameter = ""
+      }
+    }
   }
 }
+local aerial = require'aerial'
+
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
+  aerial.on_attach(client)
   -- Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -34,8 +67,8 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-  require 'illuminate'.on_attach(client)
 end
+
 
 local on_attach_ts = function(client, bufnr)
   -- disable tsserver formatting if you plan on formatting via null-ls
@@ -119,7 +152,6 @@ null_ls.config({
 })
 require('lspconfig')['null-ls'].setup({})
 
-lsp.pylsp.setup(coq.lsp_ensure_capabilities({on_attach = on_attach}))
 lsp.bashls.setup(coq.lsp_ensure_capabilities({on_attach = on_attach}))
 lsp.denols.setup(coq.lsp_ensure_capabilities({on_attach = on_attach, 
     init_options = {
@@ -129,6 +161,7 @@ lsp.denols.setup(coq.lsp_ensure_capabilities({on_attach = on_attach,
     },
     autostart = false
 }))
+lsp.pylsp.setup(coq.lsp_ensure_capabilities({on_attach = on_attach }))
 lsp.tsserver.setup(coq.lsp_ensure_capabilities({on_attach = on_attach_ts}))
 
 local eslint = {
@@ -184,5 +217,14 @@ lsp.efm.setup(coq.lsp_ensure_capabilities({
     "typescriptreact"
   },
 }))
+require "lsp_signature".setup({
+    bind = true, -- This is mandatory, otherwise border config won't get registered.
+    handler_opts = {
+      border = "single"
+    }
+})
 require('rust-tools').setup({})
 require'navigator'.setup()
+require('coq_3p') {
+  { src = 'dap'},
+}
