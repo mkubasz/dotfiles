@@ -187,6 +187,7 @@ local function eslint_config_exists()
 
   return false
 end
+
 lsp.efm.setup(coq.lsp_ensure_capabilities({
   on_attach = function(client)
     client.resolved_capabilities.document_formatting = true

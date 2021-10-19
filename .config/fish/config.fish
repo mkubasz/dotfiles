@@ -67,3 +67,6 @@ starship init fish | source
 eval /home/tumnus/anaconda3/bin/conda "shell.fish" "hook" $argv | source
 # <<< conda initialize <<<
 
+gpgconf --launch gpg-agent
+set -gx GPG_TTY (tty)
+#set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)

@@ -79,6 +79,12 @@ local dap_install = require('dap-install')
 dap_install.setup({
 	installation_path = vim.fn.stdpath('data') .. '/dapinstall/',
 })
+local dbg_list = require("dap-install.api.debuggers").get_installed_debuggers()
+
+for _, debugger in ipairs(dbg_list) do
+	dap_install.config(debugger)
+end
+
 require('code_runner').setup({})
 local cb = require'diffview.config'.diffview_callback
 
@@ -212,21 +218,8 @@ require'marks'.setup {
   mappings = {}
 }
 require('lspkind').init({
-    -- enables text annotations
-    --
-    -- default: true
     with_text = true,
-
-    -- default symbol map
-    -- can be either 'default' (requires nerd-fonts font) or
-    -- 'codicons' for codicon preset (requires vscode-codicons font)
-    --
-    -- default: 'default'
     preset = 'codicons',
-
-    -- override preset symbols
-    --
-    -- default: {}
     symbol_map = {
       Text = "",
       Method = "",
