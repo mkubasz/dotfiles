@@ -66,6 +66,7 @@ starship init fish | source
 # !! Contents within this block are managed by 'conda init' !!
 eval /home/tumnus/anaconda3/bin/conda "shell.fish" "hook" $argv | source
 # <<< conda initialize <<<
+set -gx CHROME_EXECUTABLE /usr/bin/brave
 
 gpgconf --launch gpg-agent
 set -gx GPG_TTY (tty)

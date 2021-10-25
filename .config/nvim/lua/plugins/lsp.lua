@@ -153,14 +153,14 @@ null_ls.config({
 require('lspconfig')['null-ls'].setup({})
 
 lsp.bashls.setup(coq.lsp_ensure_capabilities({on_attach = on_attach}))
-lsp.denols.setup(coq.lsp_ensure_capabilities({on_attach = on_attach, 
-    init_options = {
-      enable = false,
-      lint = false,
-      unstable = false
-    },
-    autostart = false
-}))
+-- lsp.denols.setup(coq.lsp_ensure_capabilities({on_attach = on_attach, 
+    -- init_options = {
+      -- enable = false,
+      -- lint = false,
+      -- unstable = false
+    -- },
+    -- autostart = false
+-- }))
 lsp.pylsp.setup(coq.lsp_ensure_capabilities({on_attach = on_attach }))
 lsp.tsserver.setup(coq.lsp_ensure_capabilities({on_attach = on_attach_ts}))
 

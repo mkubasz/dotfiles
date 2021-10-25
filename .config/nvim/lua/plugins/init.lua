@@ -97,7 +97,6 @@ require('packer').startup(function(use)
   ----------------------
   -- BEGIN Completion --
   ----------------------
-  use 'nvim-lua/completion-nvim'
   use 'nvim-lua/lsp_extensions.nvim'
   use 'neovim/nvim-lspconfig'
   use 'kabouzeid/nvim-lspinstall'
@@ -260,4 +259,9 @@ require('packer').startup(function(use)
   use 'akinsho/toggleterm.nvim'
   use 'yamatsum/nvim-cursorline'
   use 'chentau/marks.nvim'
+
+  use {
+	  'luukvbaal/stabilize.nvim',
+	  config = function() require('stabilize').setup() end
+  }
 end)
