@@ -100,15 +100,12 @@ require('packer').startup(function(use)
   use 'nvim-lua/lsp_extensions.nvim'
   use 'neovim/nvim-lspconfig'
   use 'kabouzeid/nvim-lspinstall'
-  use { 
-    'ms-jpq/coq_nvim', 
-    branch = 'coq'
-  }
-  use { 
-    'ms-jpq/coq.artifacts', 
-    branch= 'artifacts'
-  }
-  use 'ms-jpq/coq.thirdparty'
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'hrsh7th/cmp-buffer'
+  use 'hrsh7th/nvim-cmp' --completion
+  use {'tzachar/cmp-tabnine', run='./install.sh', requires = 'hrsh7th/nvim-cmp'}
+
+
   use {
     'ray-x/lsp_signature.nvim',
   }
@@ -119,6 +116,7 @@ require('packer').startup(function(use)
       run = 'cd lua/fzy && make'
     }
   }
+  use 'simrat39/symbols-outline.nvim'
   ----------
   -- END  --
   ----------

@@ -1,42 +1,67 @@
-vim.g.coq_settings = {
-  auto_start = true,
-  clients = {
-    tabnine = {
-      enabled = true,
-    }
-  },
-  display = { 
-    icons = {
-      mappings = {
-        Text = "",
-        Method = "",
-        Function = "",
-        Constructor = "",
-        Field = "ﰠ",
-        Variable = "",
-        Class = "ﴯ",
-        Interface = "",
-        Module = "",
-        Property = "ﰠ",
-        Unit = "塞",
-        Value = "",
-        Enum = "",
-        Keyword = "",
-        Snippet = "",
-        Color = "",
-        File = "",
-        Reference = "",
-        Folder = "",
-        EnumMember = "",
-        Constant = "",
-        Struct = "פּ",
-        Event = "",
-        Operator = "",
-        TypeParameter = ""
-      }
-    }
-  }
+local lspkind = require('lspkind')
+require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')
+
+local source_mapping = {
+	buffer = "[Buffer]",
+	nvim_lsp = "[LSP]",
+	nvim_lua = "[Lua]",
+	cmp_tabnine = "[TN]",
+	path = "[Path]",
 }
+local cmp = require'cmp'
+
+  cmp.setup({
+    mapping = {
+        ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+        ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+        ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+        ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.close(),
+        ['<CR>'] = cmp.mapping.confirm({
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true,
+        }),
+        ['<Tab>'] = function(fallback)
+            if cmp.visible() then
+                cmp.select_next_item()
+            else
+                fallback()
+            end
+        end,
+        ['<S-Tab>'] = function(fallback)
+            if cmp.visible() then
+                cmp.select_prev_item()
+            else
+                fallback()
+            end
+        end,
+    }, 
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'cmp_tabnine' },
+    }, {
+      { name = 'buffer' }
+    }),
+        format = lspkind.cmp_format({with_text = false, maxwidth = 50}),
+    	formatting = {
+        format = function(entry, vim_item)
+          vim_item.kind = lspkind.presets.default[vim_item.kind]
+          local menu = source_mapping[entry.source.name]
+          if entry.source.name == 'cmp_tabnine' then
+            if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
+              menu = entry.completion_item.data.detail .. ' ' .. menu
+            end
+            vim_item.kind = ''
+          end
+          vim_item.menu = menu
+          return vim_item
+        end
+      },
+  })
+
 local aerial = require'aerial'
 
 local on_attach = function(client, bufnr)
@@ -133,10 +158,19 @@ end
 
 require'lspinstall'.setup()
 local lsp = require('lspconfig')
-local coq = require('coq')
 local servers = require'lspinstall'.installed_servers()
-lsp.rls.setup(coq.lsp_ensure_capabilities({
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local tabnine = require('cmp_tabnine.config')
+tabnine:setup({
+        max_lines = 1000;
+        max_num_results = 20;
+        sort = true;
+	run_on_every_keystroke = true;
+	snippet_placeholder = '..';
+})
+lsp.rls.setup({
   on_attach = on_attach,
+  capabilities = capabilities,
   settings = {
     rust = {
       unstable_features = true,
@@ -144,15 +178,19 @@ lsp.rls.setup(coq.lsp_ensure_capabilities({
       all_features = true,
     },
   },
-}))
+})
 
 local null_ls = require('null-ls')
 null_ls.config({
+    capabilities = capabilities,
     sources = { null_ls.builtins.diagnostics.eslint_d.with({timeout = 20000}) },
 })
 require('lspconfig')['null-ls'].setup({})
 
-lsp.bashls.setup(coq.lsp_ensure_capabilities({on_attach = on_attach}))
+lsp.bashls.setup({
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
 -- lsp.denols.setup(coq.lsp_ensure_capabilities({on_attach = on_attach, 
     -- init_options = {
       -- enable = false,
@@ -161,8 +199,14 @@ lsp.bashls.setup(coq.lsp_ensure_capabilities({on_attach = on_attach}))
     -- },
     -- autostart = false
 -- }))
-lsp.pylsp.setup(coq.lsp_ensure_capabilities({on_attach = on_attach }))
-lsp.tsserver.setup(coq.lsp_ensure_capabilities({on_attach = on_attach_ts}))
+lsp.pylsp.setup({
+  capabilities = capabilities,
+  on_attach = on_attach, 
+})
+lsp.tsserver.setup({
+  on_attach = on_attach_ts,
+  capabilities = capabilities,
+})
 
 local eslint = {
   lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
@@ -188,7 +232,8 @@ local function eslint_config_exists()
   return false
 end
 
-lsp.efm.setup(coq.lsp_ensure_capabilities({
+lsp.efm.setup({
+  capabilities = capabilities,
   on_attach = function(client)
     client.resolved_capabilities.document_formatting = true
     client.resolved_capabilities.goto_definition = false
@@ -217,7 +262,7 @@ lsp.efm.setup(coq.lsp_ensure_capabilities({
     "typescript.tsx",
     "typescriptreact"
   },
-}))
+})
 require "lsp_signature".setup({
     bind = true, -- This is mandatory, otherwise border config won't get registered.
     handler_opts = {
@@ -226,6 +271,4 @@ require "lsp_signature".setup({
 })
 require('rust-tools').setup({})
 require'navigator'.setup()
-require('coq_3p') {
-  { src = 'dap'},
-}
+
