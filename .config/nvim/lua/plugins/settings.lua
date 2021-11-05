@@ -1,16 +1,26 @@
 local fn = vim.fn
 local g = vim.g
 
+vim.cmd('set shell=/bin/bash')
 require'nvim-web-devicons'.setup {
   default = true;
 }
+require('Comment').setup()
 
 require('neoscroll').setup()
-require'nvim-tree'.setup({
-  view = {
-    auto_resize = true
-  }
-})
+-- require'nvim-tree'.setup({
+--   view = {
+--     auto_resize = true
+--   }
+-- })
+vim.g.nvim_tree_show_icons = {
+  git = 0,
+  folders = 1, -- or 0,
+  files = 1, -- or 0,
+  folder_arrows = 1 -- or 0
+}
+vim.g.nvim_tree_gitignore = 0
+vim.g.nvim_tree_git_hl = 0
 require('gitsigns').setup {
 	signs = {
 		add = { text = '▎' },
@@ -28,8 +38,14 @@ require('indent_blankline').setup {
   show_current_context = true,
 }
 
-require('nvim-autopairs').setup()
+require('nvim-autopairs').setup {
+  disable_filetype = { "TelescopePrompt" , "guihua", "clap_input" },
 
+}
+
+if vim.o.ft ~= 'clap_input' and vim.o.ft ~= 'guihua' then
+  require'cmp'.setup.buffer { completion = {enable = false} }
+end
 require('mkdnflow').setup({})
 
 require('nvim-treesitter.configs').setup {
@@ -62,14 +78,18 @@ parser_configs.http = {
     branch = 'main',
   },
 }
-
-vim.cmd('set shell=/bin/bash')
+parser_configs.norg = {
+    install_info = {
+        url = "https://github.com/nvim-neorg/tree-sitter-norg",
+        files = { "src/parser.c", "src/scanner.cc" },
+        branch = "main"
+    },
+}
 
 require('telescope').load_extension('fzf')
 require('telescope').load_extension('projects')
 require('telescope').load_extension('dap')
 
-require('commented').setup()
 require('focus').setup()
 
 require('dapui').setup()

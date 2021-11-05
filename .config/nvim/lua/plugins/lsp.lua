@@ -10,58 +10,75 @@ local source_mapping = {
 }
 local cmp = require'cmp'
 
-  cmp.setup({
-    mapping = {
-        ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-        ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-        ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-        ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete(),
-        ['<C-e>'] = cmp.mapping.close(),
-        ['<CR>'] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-        }),
-        ['<Tab>'] = function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            else
-                fallback()
-            end
-        end,
-        ['<S-Tab>'] = function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            else
-                fallback()
-            end
-        end,
-    }, 
-    sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'cmp_tabnine' },
-    }, {
-      { name = 'buffer' }
-    }),
-        format = lspkind.cmp_format({with_text = false, maxwidth = 50}),
-    	formatting = {
-        format = function(entry, vim_item)
-          vim_item.kind = lspkind.presets.default[vim_item.kind]
-          local menu = source_mapping[entry.source.name]
-          if entry.source.name == 'cmp_tabnine' then
-            if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
-              menu = entry.completion_item.data.detail .. ' ' .. menu
-            end
-            vim_item.kind = ''
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+    end,
+  },
+  mapping = {
+      ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+      ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+      ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+      ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.close(),
+      ['<CR>'] = cmp.mapping.confirm({
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = true,
+      }),
+      ['<Tab>'] = function(fallback)
+          if cmp.visible() then
+              cmp.select_next_item()
+          else
+              fallback()
           end
-          vim_item.menu = menu
-          return vim_item
+      end,
+      ['<S-Tab>'] = function(fallback)
+          if cmp.visible() then
+              cmp.select_prev_item()
+          else
+              fallback()
+          end
+      end,
+  }, 
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'cmp_tabnine' },
+    { name = 'vsnip'}
+  }, {
+    { name = 'buffer' }
+  }),
+      format = lspkind.cmp_format({with_text = false, maxwidth = 50}),
+    formatting = {
+      format = function(entry, vim_item)
+        vim_item.kind = lspkind.presets.default[vim_item.kind]
+        local menu = source_mapping[entry.source.name]
+        if entry.source.name == 'cmp_tabnine' then
+          if entry.completion_item.data ~= nil and entry.completion_item.data.detail ~= nil then
+            menu = entry.completion_item.data.detail .. ' ' .. menu
+          end
+          vim_item.kind = ''
         end
-      },
+        vim_item.menu = menu
+        return vim_item
+      end
+    },
+})
+cmp.setup.cmdline('/', {
+  sources = {
+    { name = 'buffer' }
+  }
+})
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
   })
-
+})
 local aerial = require'aerial'
 
 local on_attach = function(client, bufnr)
@@ -186,7 +203,12 @@ null_ls.config({
     sources = { null_ls.builtins.diagnostics.eslint_d.with({timeout = 20000}) },
 })
 require('lspconfig')['null-ls'].setup({})
-
+lsp.terraformls.setup({
+    on_attach = on_attach,
+    flags = { debounce_text_changes = 150 },
+    capabilities = capabilities,
+  })
+lsp.tflint.setup{}
 lsp.bashls.setup({
   on_attach = on_attach,
   capabilities = capabilities,
@@ -270,5 +292,7 @@ require "lsp_signature".setup({
     }
 })
 require('rust-tools').setup({})
-require'navigator'.setup()
+require'navigator'.setup({
+  disable_lsp = {'rust_analyzer', 'rls'},
+})
 
