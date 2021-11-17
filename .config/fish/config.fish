@@ -29,6 +29,7 @@ if status is-interactive
   alias checkout='git checkout'f
   alias clone='git clone'
   alias commit='git commit -m'
+  alias commits='git commit -S -m'
   alias fetch='git fetch'
   alias pull='git pull origin'
   alias push='git push origin'
