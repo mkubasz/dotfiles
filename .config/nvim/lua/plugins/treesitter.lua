@@ -9,3 +9,7 @@ require'nvim-treesitter.configs'.setup {
   },
   tree_docs = {enable = true}
 }
+
+require('spellsitter').setup()
+require('telescope').load_extension('fzf')
+

@@ -22,14 +22,13 @@ opt.hlsearch = true
 -- Indent options
 opt.smartindent = true
 opt.expandtab = false
-opt.smarttab = true
 opt.tabstop = 2
 opt.wrap = false
 
 vim.cmd('set shell=/bin/bash')
 
 -- 2 spaces for selected filetypes
-cmd([[ autocmd FileType xml,html,xhtml,css,scssjavascript,lua,dart setlocal shiftwidth=2 tabstop=2 ]])
+cmd([[ autocmd FileType xml,html,xhtml,css,scssjavascript,typescript,lua,dart setlocal shiftwidth=2 tabstop=2 ]])
 -- 4 spaces for selected filetypes
 cmd([[ autocmd FileType python,c,cpp setlocal shiftwidth=4 tabstop=4 ]])
 -- 8 spaces for Go files
@@ -37,6 +36,9 @@ cmd([[ autocmd FileType go setlocal shiftwidth=8 tabstop=8 ]])
 
 -- python
 cmd([[ au BufEnter *.py set ai sw=4 ts=4 sta et fo=croql ]])
+
+-- typescript
+cmd([[ au BufEnter *.ts,*.js set ai sw=2 ts=2 sta et fo=croql ]])
 -- C/C++
 cmd([[ au BufEnter *.c,*.cpp,*cxx,*C,*CPP set ai sw=4 ts=4 sta fo=croql ]])
 -- lua
